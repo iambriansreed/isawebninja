@@ -20,7 +20,7 @@ app.get('/view', function (req, res) {
     res.send(output);
 });
 
-app.post('*', function (req, res) {
+app.post('/hook', function (req, res) {
 
     let fileName = (new Date().toISOString()).replace(/[^a-z0-9]/gi, '-').toLowerCase();
 
@@ -33,6 +33,7 @@ app.post('*', function (req, res) {
     }
 
     payload = {
+        xHubSignature : xHubSignature('testOk', req.body),
         headers: req.headers,
         payload: payload
     };
@@ -48,6 +49,11 @@ app.get('*', function (req, res) {
 
 });
 
+
 app.listen(process.env.PORT, function () {
     console.log('Example app listening on port ' + process.env.PORT + '!')
 });
+
+function xHubSignature(secret, data) {
+    return 'sha1=' + require('crypto').createHmac('sha1', secret).update(data).digest('hex');
+}
