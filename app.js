@@ -55,5 +55,5 @@ app.listen(process.env.PORT, function () {
 });
 
 function xHubSignature(secret, data) {
-    return 'sha1=' + require('crypto').createHmac('sha1', secret).update(data).digest('hex');
+    return 'sha1=' + require('crypto').createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
 }
