@@ -25,7 +25,7 @@ app.post('*', function (req, res) {
     let fileName = (new Date().toISOString()).replace(/[^a-z0-9]/gi, '-').toLowerCase();
     let data = JSON.stringify(req.body, null, '\t');
 
-    fs.writeFileSync('./public/' + fileName, data);
+    fs.writeFileSync('./public/' + fileName + '.json', data);
 
     res.send('<pre>' + data + '</pre>');
 });
