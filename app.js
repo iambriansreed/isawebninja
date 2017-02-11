@@ -33,7 +33,7 @@ app.post('/hook', function (req, res) {
     }
 
     payload = {
-        xHubSignature : xHubSignature('testOk', req.body),
+        xHubSignature : xHubSignature('testOk', req.body.payload),
         headers: req.headers,
         payload: payload
     };
