@@ -23,7 +23,10 @@ app.get('/view', function (req, res) {
 app.post('*', function (req, res) {
 
     let fileName = (new Date().toISOString()).replace(/[^a-z0-9]/gi, '-').toLowerCase();
-    let data = JSON.stringify(req.body, null, '\t');
+
+    let payload = req.body.payload || req.body;
+
+    let data = JSON.stringify(payload, null, '\t');
 
     fs.writeFileSync('./public/' + fileName + '.json', data);
 
