@@ -26,6 +26,12 @@ app.post('*', function (req, res) {
 
     let payload = req.body.payload || req.body;
 
+    try {
+        payload = JSON.parse(payload);
+    } catch (e) {
+        console.log("not JSON");
+    }
+
     let data = JSON.stringify(payload, null, '\t');
 
     fs.writeFileSync('./public/' + fileName + '.json', data);
