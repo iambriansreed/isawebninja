@@ -13,6 +13,13 @@ app.get('/', function (req, res) {
     res.send('Hello World!');
 });
 
+app.get('/view', function (req, res) {
+
+    let files = fs.readdirSync('./public/');
+    let output = files.map(file => '<a href="' + file + '">' + file + '</a>').join('<br>');
+    res.send(output);
+});
+
 app.post('*', function (req, res) {
 
     let fileName = (new Date().toISOString()).replace(/[^a-z0-9]/gi, '-').toLowerCase();
@@ -24,9 +31,9 @@ app.post('*', function (req, res) {
 });
 
 app.get('*', function (req, res) {
-    res.send('Hello World!');
+
 });
 
 app.listen(process.env.PORT, function () {
-    console.log('Example app listening on port 3000!')
+    console.log('Example app listening on port ' + process.env.PORT + '!')
 });
