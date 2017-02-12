@@ -9,10 +9,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('public'));
 
-app.get('/', function (req, res) {
-    res.send('Hello World!');
-});
-
 app.get('/view', function (req, res) {
 
     let files = fs.readdirSync('./public/');
@@ -24,29 +20,23 @@ app.post('/hook', function (req, res) {
 
     let fileName = (new Date().toISOString()).replace(/[^a-z0-9]/gi, '-').toLowerCase();
 
-    let payload = req.body.payload || req.body;
-
-    try {
-        payload = JSON.parse(payload);
-    } catch (e) {
-        console.log("not JSON");
-    }
-
-    payload = {
-        xHubSignature : xHubSignature('testOk', req.body.payload),
+    let log = {
+        xHubSignature: xHubSignature('testOk', JSON.stringify(req.body)),
         headers: req.headers,
-        payload: payload
+        payload: req.body
     };
 
-    let data = JSON.stringify(payload, null, '\t');
-
-    fs.writeFileSync('./public/' + fileName + '.json', data);
+    fs.writeFileSync('./public/' + fileName + '.json', JSON.stringify(log, null, '\t'));
 
     res.send('<pre>' + data + '</pre>');
 });
 
 app.get('*', function (req, res) {
+    res.send('Hello World! GET');
+});
 
+app.post('*', function (req, res) {
+    res.send('Hello World! POST');
 });
 
 
