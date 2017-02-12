@@ -18,10 +18,16 @@ app.get('/view', function (req, res) {
 
 app.post('/hook', function (req, res) {
 
+    let secret = 'testOk';
+
+    let xHubSignature = 'sha1=' + (require('crypto').createHmac('sha1', secret))
+            .update(JSON.stringify(req.body))
+            .digest('hex');
+
     let fileName = (new Date().toISOString()).replace(/[^a-z0-9]/gi, '-').toLowerCase();
 
     let log = {
-        xHubSignature: xHubSignature('testOk', JSON.stringify(req.body)),
+        xHubSignature: xHubSignature,
         headers: req.headers,
         payload: req.body
     };
@@ -43,7 +49,3 @@ app.post('*', function (req, res) {
 app.listen(process.env.PORT, function () {
     console.log('Example app listening on port ' + process.env.PORT + '!')
 });
-
-function xHubSignature(secret, data) {
-    return 'sha1=' + require('crypto').createHmac('sha1', secret).update(JSON.stringify(data)).digest('hex');
-}
